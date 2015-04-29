@@ -13,14 +13,8 @@ with Ada.Long_Float_Text_IO;            use Ada.Long_Float_Text_IO;
 procedure Nadrz is
   c : Connection.TConnectionRef;
   bConnectionWasTerminated : Boolean;
-   hladina : Long_Float := 500.0;
-   odtok : Long_Float := 0.0;
    Rnd_Odtok : Generator;
-   dT : Duration;
-   currTime : Time;
-   G_vyskaHladaniny_TimeStamp : Time := Clock;
-   zmenaVysky : Long_Float;
-   h : Long_Float;
+   pom : Integer :=0;
 begin
   Connection.GlobalInit;
   --
@@ -44,25 +38,13 @@ begin
     end;
     --
     loop
-      delay 10.0;
+      delay 1.0;
          --
-      currTime := Clock;
-      if hladina > 0.0 then
-        odtok := 1000.0*Long_Float(Random(Rnd_Odtok));	-- 0.0 .. 1.0
-      end if;
-      --
-      dT := To_Duration(currTime - G_vyskaHladaniny_TimeStamp);
-      G_vyskaHladaniny_TimeStamp := currTime;
-      --
-      zmenaVysky := Long_Float(dT) * (Client_Msgs.Pritok - odtok);
-      --
-      h := hladina + zmenaVysky;
-      if h >= 0.0 then
-        hladina := h;
-      else
-        hladina := 0.0;
-        odtok := 0.0;
-      end if;
+         pom := pom + 1;
+         if pom = 10 then
+            Client_Msgs.Odtok := 10.0*Long_Float(Random(Rnd_Odtok));
+            pom := 0;
+         end if;
       --
       declare
         use Client_Msgs;
@@ -70,16 +52,18 @@ begin
       begin
         msg_CPtr.valueName := ValueName_Pkg.To_Bounded_String("VyskaHladiny");
         msg_CPtr.value := validValue;
+        msg_CPtr.value.timeStamp := Clock;
         msg_CPtr.value.value := Long_Float(hladina);
         Connection.SendMessage(c, CMessage_CPtr(msg_CPtr), bConnectionWasTerminated); --posle hodnotu
-        --Put_Line(Long_Float'Image(hladina));
-        Put(Item =>hladina,Fore => 5, Aft => 3, Exp => 0);
-        Put("Odtok: ");
-        Put_Line(Long_Float'Image(odtok));
-        Put("Pritok: ");
-        Put_Line(Long_Float'Image(Pritok));
-        Put("Vyska Hladina: ");
-        Put_Line(Long_Float'Image(hladina));
+            Put("Pritok: ");
+            Put(Item =>Pritok,Fore => 5, Aft => 3, Exp => 0);
+            Put_Line("");
+            Put("Hladina: ");
+            Put(Item =>Hladina,Fore => 5, Aft => 3, Exp => 0);
+            Put_Line("");
+            Put("Odtok: ");
+            Put(Item =>Odtok,Fore => 5, Aft => 3, Exp => 0);
+            Put_Line("");
       end;
       --
     end loop;

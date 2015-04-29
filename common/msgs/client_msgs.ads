@@ -3,6 +3,8 @@ with ValueTypes;	use ValueTypes;
 
 package Client_Msgs is
    Pritok : Long_Float := 0.0;
+   Odtok: Long_Float := 0.0;
+   Hladina: Long_Float :=500.0;
   ---------------------
   -- CConnectMessage --
   ---------------------
