@@ -41,7 +41,7 @@ begin
       delay 1.0;
          --
          pom := pom + 1;
-         if pom = 10 then
+         if pom = 10 and Hladina > 0.0 then
             Client_Msgs.Odtok := 100.0*Long_Float(Random(Rnd_Odtok));
             pom := 0;
          end if;
