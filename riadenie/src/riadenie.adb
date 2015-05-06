@@ -24,6 +24,13 @@ begin
       msg_CPtr.clientName := ClientName_Pkg.To_Bounded_String("Riadenie");
       Connection.SendMessage(c, CMessage_CPtr(msg_CPtr), bConnectionWasTerminated);
     end;
+    declare
+      use Client_Msgs;
+      msg_CPtr : CAttachValue_CPtr := new CAttachValue;
+    begin
+      msg_CPtr.valueName := ValueName_Pkg.To_Bounded_String("ZiadanavyskaHladiny");
+      Connection.SendMessage(c, CMessage_CPtr(msg_CPtr), bConnectionWasTerminated);
+    end;
     --
     loop
       delay 1.0;
