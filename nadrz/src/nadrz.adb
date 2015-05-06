@@ -11,6 +11,7 @@ with Ada.Real_Time;		use Ada.Real_Time;
 with Ada.Numerics.Elementary_Functions; use Ada.Numerics.Elementary_Functions;
 with Ada.Float_Text_IO;                 use Ada.Float_Text_IO;
 with Ada.Long_Float_Text_IO;            use Ada.Long_Float_Text_IO;
+with Ada.Calendar;
 
 procedure Nadrz is
   c : Connection.TConnectionRef;
@@ -56,7 +57,7 @@ begin
       begin
         msg_CPtr.valueName := ValueName_Pkg.To_Bounded_String("VyskaHladiny");
         msg_CPtr.value := validValue;
-        msg_CPtr.value.timeStamp := Clock;
+        msg_CPtr.value.timeStamp := Ada.Calendar.Clock;
         msg_CPtr.value.value := Long_Float(hladina);
         Connection.SendMessage(c, CMessage_CPtr(msg_CPtr), bConnectionWasTerminated); --posle hodnotu
         Put("Pritok: ");
@@ -75,7 +76,7 @@ begin
       begin
         msg_CPtr.valueName := ValueName_Pkg.To_Bounded_String("Odtok");
         msg_CPtr.value := validValue;
-        msg_CPtr.value.timeStamp := Clock;
+        msg_CPtr.value.timeStamp := Ada.Calendar.Clock;
         msg_CPtr.value.value := Long_Float(Odtok);
         Connection.SendMessage(c, CMessage_CPtr(msg_CPtr), bConnectionWasTerminated); --posle hodnotu
       end;
