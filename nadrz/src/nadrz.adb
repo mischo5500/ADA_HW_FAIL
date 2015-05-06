@@ -42,11 +42,12 @@ begin
          --
          pom := pom + 1;
          if pom = 10 then
-            Client_Msgs.Odtok := 10.0*Long_Float(Random(Rnd_Odtok));
+            Client_Msgs.Odtok := 100.0*Long_Float(Random(Rnd_Odtok));
             pom := 0;
          end if;
          if Hladina < 0.0 then
             Odtok := 0.0;
+            Hladina := 0.0;
          end if;
          Hladina := Hladina + Pritok - Odtok;
       --
