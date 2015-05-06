@@ -2,6 +2,7 @@ pragma Ada_2005;
 with Client;
 with Connection;			use Connection;
 with Client_Msgs;
+use Client_Msgs;
 with ValueTypes;			use ValueTypes;
 with Ada.Text_IO;			use Ada.Text_IO;
 with GNAT.OS_Lib;
@@ -10,6 +11,7 @@ with Ada.Real_Time;		use Ada.Real_Time;
 with Ada.Numerics.Elementary_Functions; use Ada.Numerics.Elementary_Functions;
 with Ada.Float_Text_IO;                 use Ada.Float_Text_IO;
 with Ada.Long_Float_Text_IO;            use Ada.Long_Float_Text_IO;
+
 procedure Nadrz is
   c : Connection.TConnectionRef;
   bConnectionWasTerminated : Boolean;
@@ -22,7 +24,6 @@ begin
   if c /= notConnected then
     --
     declare
-      use Client_Msgs;
       msg_CPtr : CConnectMessage_CPtr := new CConnectMessage; --informativna sprava
 
     begin
@@ -30,7 +31,6 @@ begin
       Connection.SendMessage(c, CMessage_CPtr(msg_CPtr), bConnectionWasTerminated);
     end;
     declare
-      use Client_Msgs;
       msg_CPtr : CAttachValue_CPtr := new CAttachValue;
     begin
       msg_CPtr.valueName := ValueName_Pkg.To_Bounded_String("Pritok");
@@ -45,9 +45,12 @@ begin
             Client_Msgs.Odtok := 10.0*Long_Float(Random(Rnd_Odtok));
             pom := 0;
          end if;
+         if Hladina < 0.0 then
+            Odtok := 0.0;
+         end if;
+         Hladina := Hladina + Pritok - Odtok;
       --
       declare
-        use Client_Msgs;
         msg_CPtr : CSetValue_CPtr := new CSetValue;
       begin
         msg_CPtr.valueName := ValueName_Pkg.To_Bounded_String("VyskaHladiny");
@@ -55,17 +58,26 @@ begin
         msg_CPtr.value.timeStamp := Clock;
         msg_CPtr.value.value := Long_Float(hladina);
         Connection.SendMessage(c, CMessage_CPtr(msg_CPtr), bConnectionWasTerminated); --posle hodnotu
-            Put("Pritok: ");
-            Put(Item =>Pritok,Fore => 5, Aft => 3, Exp => 0);
-            Put_Line("");
-            Put("Hladina: ");
-            Put(Item =>Hladina,Fore => 5, Aft => 3, Exp => 0);
-            Put_Line("");
-            Put("Odtok: ");
-            Put(Item =>Odtok,Fore => 5, Aft => 3, Exp => 0);
-            Put_Line("");
+        Put("Pritok: ");
+        Put(Item =>Pritok,Fore => 5, Aft => 3, Exp => 0);
+        Put_Line("");
+        Put("Hladina: ");
+        Put(Item =>Hladina,Fore => 5, Aft => 3, Exp => 0);
+        Put_Line("");
+        Put("Odtok: ");
+        Put(Item =>Odtok,Fore => 5, Aft => 3, Exp => 0);
+        Put_Line("");
       end;
       --
+      declare
+        msg_CPtr : CSetValue_CPtr := new CSetValue;
+      begin
+        msg_CPtr.valueName := ValueName_Pkg.To_Bounded_String("Odtok");
+        msg_CPtr.value := validValue;
+        msg_CPtr.value.timeStamp := Clock;
+        msg_CPtr.value.value := Long_Float(Odtok);
+        Connection.SendMessage(c, CMessage_CPtr(msg_CPtr), bConnectionWasTerminated); --posle hodnotu
+      end;
     end loop;
     --
     Connection.Disconnect(c);

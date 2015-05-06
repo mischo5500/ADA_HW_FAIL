@@ -1,11 +1,12 @@
 pragma Ada_2005;
 with Client;
 with Connection;			use Connection;
-with Client_Msgs;
+with Client_Msgs;                       use Client_Msgs;
 with Ada.Strings.Unbounded;		use Ada.Strings.Unbounded;
 with ValueTypes;			use ValueTypes;
 with Ada.Text_IO;			use Ada.Text_IO;
 with GNAT.OS_Lib;
+with Ada.Long_Float_Text_IO;            use Ada.Long_Float_Text_IO;
 
 procedure Riadenie is
   c : Connection.TConnectionRef;
@@ -18,7 +19,6 @@ begin
   if c /= notConnected then
     --
     declare
-      use Client_Msgs;
       msg_CPtr : CConnectMessage_CPtr := new CConnectMessage;
     begin
       msg_CPtr.clientName := ClientName_Pkg.To_Bounded_String("Riadenie");
@@ -35,10 +35,11 @@ begin
     loop
       delay 1.0;
       --
-      i := i + 1;
-      --
+         i := i + 1;
+         Put("Vyska hladiny: ");
+         Put(Item =>Hladina,Fore => 5, Aft => 3, Exp => 0);      --
+         Put_Line("");
       declare
-        use Client_Msgs;
         msg_CPtr : CSetValue_CPtr := new CSetValue;
       begin
         msg_CPtr.valueName := ValueName_Pkg.To_Bounded_String("Pritok"); --vyska hladiny
