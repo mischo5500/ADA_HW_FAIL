@@ -32,8 +32,6 @@ package body Client_Msgs is
   procedure Action (Self : in CChangeValue) is
   begin
       Pritok := Self.value.value;
-      Hladina := Hladina + Pritok - Odtok;
-
       --Put_Line(ValueName_Pkg.To_String(Self.valueName) & " = " & Self.value.value'Img);
   end Action;
 

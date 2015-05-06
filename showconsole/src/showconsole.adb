@@ -7,6 +7,7 @@ with ValueTypes;			use ValueTypes;
 with Ada.Text_IO;			use Ada.Text_IO;
 with GNAT.OS_Lib;
 with Ada.Integer_Text_IO; use  Ada.Integer_Text_IO;
+with Ada.Long_Float_Text_IO;            use Ada.Long_Float_Text_IO;
 
 procedure ShowConsole is
    c : Connection.TConnectionRef;
@@ -25,7 +26,7 @@ begin
       msg_CPtr.clientName := ClientName_Pkg.To_Bounded_String("ShowConsole");
       Connection.SendMessage(c, CMessage_CPtr(msg_CPtr), bConnectionWasTerminated);
     end;
-    --
+    --Attach na pritok
     declare
       use Client_Msgs;
       msg_CPtr : CAttachValue_CPtr := new CAttachValue;
@@ -33,7 +34,30 @@ begin
       msg_CPtr.valueName := ValueName_Pkg.To_Bounded_String("Pritok");
       Connection.SendMessage(c, CMessage_CPtr(msg_CPtr), bConnectionWasTerminated);
     end;
-    --
+    --Attach na Odtok
+    declare
+      use Client_Msgs;
+      msg_CPtr : CAttachValue_CPtr := new CAttachValue;
+    begin
+      msg_CPtr.valueName := ValueName_Pkg.To_Bounded_String("Odtok");
+      Connection.SendMessage(c, CMessage_CPtr(msg_CPtr), bConnectionWasTerminated);
+    end;
+
+    declare
+      use Client_Msgs;
+      msg_CPtr : CAttachValue_CPtr := new CAttachValue;
+    begin
+      msg_CPtr.valueName := ValueName_Pkg.To_Bounded_String("VyskaHladiny");
+      Connection.SendMessage(c, CMessage_CPtr(msg_CPtr), bConnectionWasTerminated);
+    end;
+    --Attach na Ziadanu vysku hladiny "ZiadanavyskaHladiny"
+    declare
+      use Client_Msgs;
+      msg_CPtr : CAttachValue_CPtr := new CAttachValue;
+    begin
+      msg_CPtr.valueName := ValueName_Pkg.To_Bounded_String("ZiadanavyskaHladiny");
+      Connection.SendMessage(c, CMessage_CPtr(msg_CPtr), bConnectionWasTerminated);
+    end;
     loop
          Put_Line("Enter new height of water level:");
          get(newSurfaceValue);
