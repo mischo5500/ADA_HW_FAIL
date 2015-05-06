@@ -11,7 +11,7 @@ with Ada.Long_Float_Text_IO;            use Ada.Long_Float_Text_IO;
 procedure Riadenie is
   c : Connection.TConnectionRef;
   bConnectionWasTerminated : Boolean;
-  i : Long_Long_Integer := 0;
+  novy_pritok : Long_Long_Integer := 0;
 begin
   Connection.GlobalInit;
   --
@@ -31,20 +31,36 @@ begin
       msg_CPtr.valueName := ValueName_Pkg.To_Bounded_String("ZiadanavyskaHladiny");
       Connection.SendMessage(c, CMessage_CPtr(msg_CPtr), bConnectionWasTerminated);
     end;
+    declare
+      use Client_Msgs;
+      msg_CPtr : CAttachValue_CPtr := new CAttachValue;
+    begin
+      msg_CPtr.valueName := ValueName_Pkg.To_Bounded_String("VyskaHladiny");
+      Connection.SendMessage(c, CMessage_CPtr(msg_CPtr), bConnectionWasTerminated);
+    end;
     --
     loop
       delay 1.0;
       --
-         i := i + 1;
-         Put("Vyska hladiny: ");
-         Put(Item =>Hladina,Fore => 5, Aft => 3, Exp => 0);      --
-         Put_Line("");
+      if(Hladina > ZiadanaHladina) then
+         if(novy_pritok > 10) then
+           novy_pritok := novy_pritok - 10;
+         else
+           novy_pritok := 0;
+         end if;
+      elsif(Hladina < ZiadanaHladina) then
+            if(novy_pritok < 500) then
+           novy_pritok := novy_pritok + 10;
+         else
+           novy_pritok := 500;
+         end if;
+      end if;
       declare
         msg_CPtr : CSetValue_CPtr := new CSetValue;
       begin
         msg_CPtr.valueName := ValueName_Pkg.To_Bounded_String("Pritok"); --vyska hladiny
         msg_CPtr.value := validValue;
-        msg_CPtr.value.value := Long_Float(i);
+        msg_CPtr.value.value := Long_Float(novy_pritok);
         Connection.SendMessage(c, CMessage_CPtr(msg_CPtr), bConnectionWasTerminated);
       end;
       --
