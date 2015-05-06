@@ -24,11 +24,11 @@ package ValueTypes is
     -- priznak platnosti
   end record;
   --
-  --unknownValue : constant TValue :=
-    -- (value => 0.0,
-     -- timeStamp => Time_First,
-      --status => (Valid => False, Unknown => True)
-   --  );
+  unknownValue : constant TValue :=
+     (value => 0.0,
+      timeStamp => Ada.Calendar.Clock,
+      status => (Valid => False, Unknown => True)
+     );
   validValue : constant TValue :=
    (value => 0.0,
       timeStamp => Ada.Calendar.Clock,
