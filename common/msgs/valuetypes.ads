@@ -29,11 +29,11 @@ package ValueTypes is
      -- timeStamp => Time_First,
       --status => (Valid => False, Unknown => True)
    --  );
-  --validValue : constant TValue :=
-   --  (value => 0.0,
-    --  timeStamp => Time_First,
-     -- status => (Valid => True, Unknown => False)
-    -- );
+  validValue : constant TValue :=
+   (value => 0.0,
+      timeStamp => Ada.Calendar.Clock,
+      status => (Valid => True, Unknown => False)
+   );
   --
   VALUE_NAME_LENGTH : constant := 32;
   --
