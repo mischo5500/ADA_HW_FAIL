@@ -11,7 +11,11 @@ with Ada.Long_Float_Text_IO;            use Ada.Long_Float_Text_IO;
 procedure Riadenie is
   c : Connection.TConnectionRef;
   bConnectionWasTerminated : Boolean;
-  novy_pritok : Long_Long_Integer := 0;
+  novy_pritok : Long_Float := 0.0;
+  chyba : Long_Float := 0.0;
+  integrovana_chyba : Long_Float := 0.0;
+  akcna : Long_Float := 0.0;
+
 begin
   Connection.GlobalInit;
   --
@@ -41,19 +45,16 @@ begin
     --
     loop
       delay 1.0;
+      chyba := ZiadanaHladina - Hladina;
+      integrovana_chyba := integrovana_chyba + chyba;
+      akcna := 4.0 * chyba + 0.3 * integrovana_chyba;
+      novy_pritok := novy_pritok + akcna;
       --
-      if(Hladina > ZiadanaHladina) then
-         if(novy_pritok > 10) then
-           novy_pritok := novy_pritok - 10;
-         else
-           novy_pritok := 0;
-         end if;
-      elsif(Hladina < ZiadanaHladina) then
-            if(novy_pritok < 500) then
-           novy_pritok := novy_pritok + 10;
-         else
-           novy_pritok := 500;
-         end if;
+      if(novy_pritok < 0.0) then
+          novy_pritok := 0.0;
+      end if;
+      if(novy_pritok > 500.0) then
+          novy_pritok := 500.0;
       end if;
       declare
         msg_CPtr : CSetValue_CPtr := new CSetValue;
