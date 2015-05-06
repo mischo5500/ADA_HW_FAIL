@@ -29,7 +29,7 @@ package body Client_Msgs is
 
   procedure Action (Self : in CChangeValue) is
   begin
-      --Put_Line(ValueName_Pkg.To_String(Self.valueName) & " = " & Self.value.value'Img);
+      Put_Line(ValueName_Pkg.To_String(Self.valueName) & " = " & Self.value.value'Img);
       null;
   end Action;
 
