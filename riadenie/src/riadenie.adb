@@ -15,6 +15,8 @@ procedure Riadenie is
   chyba : Long_Float := 0.0;
   integrovana_chyba : Long_Float := 0.0;
   akcna : Long_Float := 0.0;
+  stara_chyba : Long_Float := 0.0;
+  derivovana_chyba : Long_Float := 0.0;
 
 begin
   Connection.GlobalInit;
@@ -46,15 +48,17 @@ begin
     loop
       delay 1.0;
       chyba := ZiadanaHladina - Hladina;
+      derivovana_chyba := chyba - stara_chyba;
       integrovana_chyba := integrovana_chyba + chyba;
-      akcna := 4.0 * chyba + 0.3 * integrovana_chyba;
+      akcna := 0.8 * chyba + 0.6 * derivovana_chyba; --+ 0.6 * integrovana_chyba;
       novy_pritok := novy_pritok + akcna;
+      stara_chyba := chyba;
       --
       if(novy_pritok < 0.0) then
           novy_pritok := 0.0;
       end if;
-      if(novy_pritok > 500.0) then
-          novy_pritok := 500.0;
+      if(novy_pritok > 200.0) then
+          novy_pritok := 200.0;
       end if;
       declare
         msg_CPtr : CSetValue_CPtr := new CSetValue;
