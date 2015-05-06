@@ -36,11 +36,11 @@ package body Client_Msgs is
     Put(Item =>Self.value.value, Fore => 5, Aft => 3, Exp => 0);
     Put_Line("");
     if(ValueName_Pkg.To_String(Self.valueName) = "ZiadanavyskaHladiny")then
-      Put_Line("Vyska");
-    --elsif(Name = "sophomore")then
-    --  return 2;
+      ZiadanaHladina := Self.value.value;
+    elsif(ValueName_Pkg.To_String(Self.valueName) = "VyskaHladiny")then
+      Hladina := Self.value.value;
     else
-      Put_Line("Nieco ine");
+      Put_Line("!!!!!!!!!!!!!!Neznama sprava!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
     end if;
   end Action;
 
