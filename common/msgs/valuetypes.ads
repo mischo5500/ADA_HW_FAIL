@@ -1,5 +1,9 @@
 with Ada.Real_Time; use Ada.Real_Time;
 with Ada.Strings.Bounded;
+with Ada.Calendar;             use Ada.Calendar;
+with Ada.Calendar.Formatting;  use Ada.Calendar.Formatting;
+with Ada.Calendar.Time_Zones;  use Ada.Calendar.Time_Zones;
+with Ada.Text_IO;              use Ada.Text_IO;
 
 package ValueTypes is
 
@@ -13,23 +17,23 @@ package ValueTypes is
     value : Long_Float;
     -- hodnota
 
-    timeStamp : Time;
+    timeStamp : Ada.Calendar.Time;
     -- casova znacka
 
     status : TValueStatus;
     -- priznak platnosti
   end record;
   --
-  unknownValue : constant TValue :=
-     (value => 0.0,
-      timeStamp => Time_First,
-      status => (Valid => False, Unknown => True)
-     );
-  validValue : constant TValue :=
-     (value => 0.0,
-      timeStamp => Time_First,
-      status => (Valid => True, Unknown => False)
-     );
+  --unknownValue : constant TValue :=
+    -- (value => 0.0,
+     -- timeStamp => Time_First,
+      --status => (Valid => False, Unknown => True)
+   --  );
+  --validValue : constant TValue :=
+   --  (value => 0.0,
+    --  timeStamp => Time_First,
+     -- status => (Valid => True, Unknown => False)
+    -- );
   --
   VALUE_NAME_LENGTH : constant := 32;
   --
