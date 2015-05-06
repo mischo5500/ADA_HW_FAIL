@@ -7,14 +7,19 @@ with Ada.Calendar.Formatting;  use Ada.Calendar.Formatting;
 with Ada.Calendar.Time_Zones;  use Ada.Calendar.Time_Zones;
 with Ada.Text_IO;              use Ada.Text_IO;
 
+
 procedure Main is
 test : TValue :=
      (value => 0.7,
       timeStamp => Ada.Calendar.Clock,
       status => (Valid => False, Unknown => True)
      );
+name : String := "filename.csv";
 begin
-   My_Archive.Archive_it(test);
+   while True loop
+         delay 1.0;
+         My_Archive.Archive_it(test,name);
+   end loop;
    Ada.Text_IO.Put_Line("Hello");
 end Main;
 --comment
