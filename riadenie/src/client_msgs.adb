@@ -35,6 +35,13 @@ package body Client_Msgs is
     Put(ValueName_Pkg.To_String(Self.valueName)& " = ");
     Put(Item =>Self.value.value, Fore => 5, Aft => 3, Exp => 0);
     Put_Line("");
+    if(ValueName_Pkg.To_String(Self.valueName) = "ZiadanavyskaHladiny")then
+      Put_Line("Vyska");
+    --elsif(Name = "sophomore")then
+    --  return 2;
+    else
+      Put_Line("Nieco ine");
+    end if;
   end Action;
 
   ------------
