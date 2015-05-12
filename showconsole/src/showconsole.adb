@@ -97,6 +97,7 @@ begin
 
                      Put_Line("Enter new height of water level:");
                      get(newSurfaceValue);
+                     ZiadanaHladina := Long_Float(newSurfaceValue);
                      declare
                         use Client_Msgs;
                         msg_CPtr : CSetValue_CPtr := new CSetValue;
