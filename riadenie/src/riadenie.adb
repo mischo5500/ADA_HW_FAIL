@@ -45,7 +45,8 @@ begin
       msg_CPtr.valueName := ValueName_Pkg.To_Bounded_String("VyskaHladiny");
       Connection.SendMessage(c, CMessage_CPtr(msg_CPtr), bConnectionWasTerminated);
     end;
-    --
+      --
+      Hladina := 0;
     loop
       delay 1.0;
       chyba := ZiadanaHladina - Hladina;

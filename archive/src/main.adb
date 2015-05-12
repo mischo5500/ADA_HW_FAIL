@@ -14,8 +14,8 @@ test : TValue :=
       timeStamp => Ada.Calendar.Clock,
       status => (Valid => False, Unknown => True)
      );
-name : String := "filename.csv";
-begin
+   name : String := "filename.csv";
+   begin
    while True loop
          delay 1.0;
          My_Archive.Archive_it(test,name);

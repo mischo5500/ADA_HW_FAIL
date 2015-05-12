@@ -1,5 +1,7 @@
 with Ada.Text_IO;			use Ada.Text_IO;
 with Ada.Long_Float_Text_IO;            use Ada.Long_Float_Text_IO;
+with My_Archive;                        use My_Archive;
+with Ada.Calendar;
 package body Client_Msgs is
 
   ------------
@@ -28,7 +30,13 @@ package body Client_Msgs is
   -- Action --
   ------------
 
-  procedure Action (Self : in CChangeValue) is
+   procedure Action (Self : in CChangeValue) is
+      test : TValue :=
+     (value => 0.7,
+      timeStamp => Ada.Calendar.Clock,
+      status => (Valid => False, Unknown => True)
+     );
+   name : String := "filename.csv";
   begin
       --Put_Line(ValueName_Pkg.To_String(Self.valueName) & " = " & Self.value.value'Img);
     if(ValueName_Pkg.To_String(Self.valueName) = "VyskaHladiny")then
@@ -49,8 +57,9 @@ package body Client_Msgs is
         --Put("Odtok: ");
         --Put(Item =>Odtok,Fore => 5, Aft => 3, Exp => 0);
         --Put_Line("");
-     end if;
-
+      end if;
+      test:=Self.value;
+     My_Archive.Archive_it(Self.value,ValueName_Pkg.To_String(Self.valueName));
 
   end Action;
 

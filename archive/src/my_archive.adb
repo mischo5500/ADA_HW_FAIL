@@ -10,15 +10,17 @@ with Ada.Calendar.Time_Zones; use Ada.Calendar.Time_Zones;
 with Ada.Real_Time; use Ada.Real_Time;
 
 package body My_Archive is
-   procedure Archive_it (A: in out TValue; fname: in out String) is
+   procedure Archive_it (A: in TValue; fname: in String) is
       Tmp : Float := 5.0;
       Output_file : File_Type;
+      facina : String := fname & ".csv";
    begin
-         begin
-         Open (File => Output_file,Mode => Append_File,Name => fname);
+      begin
+         --Put_Line(facina);
+         Open (File => Output_file,Mode => Append_File,Name => facina);
          exception
            when Name_Error =>
-               Create (File => Output_file, Mode => Append_File, Name => fname);
+               Create (File => Output_file, Mode => Append_File, Name => facina);
          end;
          Put(File => Output_file,Item => A.value ,Fore => 5, Aft => 3, Exp => 0);
          Put(Output_file,";");
