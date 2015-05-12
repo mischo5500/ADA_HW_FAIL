@@ -24,7 +24,7 @@ package body My_Archive is
          end;
          Put(File => Output_file,Item => A.value ,Fore => 5, Aft => 3, Exp => 0);
          Put(Output_file,";");
-         Put(File => Output_file,Item => Image(Date => A.timeStamp, Time_Zone => Ada.Calendar.Time_Zones.UTC_Time_Offset));
+         Put(File => Output_file,Item => Image(Date => A.timeStamp, Time_Zone => Ada.Calendar.Time_Zones.UTC_Time_Offset,Include_Time_Fraction => True));
          Put(Output_file,";");
          if  A.status(Valid) then
             Put(File => Output_file,Item => "Valid");
