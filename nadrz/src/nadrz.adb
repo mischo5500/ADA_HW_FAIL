@@ -16,8 +16,13 @@ with Ada.Calendar;
 procedure Nadrz is
   c : Connection.TConnectionRef;
   bConnectionWasTerminated : Boolean;
-   Rnd_Odtok : Generator;
-   pom : Integer :=0;
+  Rnd_Odtok : Generator;
+   pom : Integer :=0; --pomocna premenna na pocitanie sekund
+   vyskaHladaniny_TimeStamp : Time := Clock;
+   vyskaHladaniny_TimeStamp2 : Time;
+   dT: Duration;
+   zmenaVysky : Long_Float := 0.0;
+   h : Long_Float := 0.0; --pomocna premenna pri ratani Hladiny
 begin
   Connection.GlobalInit;
   --
@@ -37,20 +42,32 @@ begin
       msg_CPtr.valueName := ValueName_Pkg.To_Bounded_String("Pritok");
       Connection.SendMessage(c, CMessage_CPtr(msg_CPtr), bConnectionWasTerminated);
     end;
-    --
+      --
+    Odtok := 100.0*Long_Float(Random(Rnd_Odtok)); --pociatocne naplnenie odtoku
     loop
       delay 1.0;
          --
+         vyskaHladaniny_TimeStamp2 := Clock;
          pom := pom + 1;
-         if pom = 10 and Hladina > 0.0 then
+         if (pom = 10 and Hladina >= 0.0) then
             Client_Msgs.Odtok := 100.0*Long_Float(Random(Rnd_Odtok));
             pom := 0;
          end if;
-         if Hladina < 0.0 then
-            Odtok := 0.0;
-            Hladina := 0.0;
+         dT := To_Duration(vyskaHladaniny_TimeStamp2 - vyskaHladaniny_TimeStamp);
+         vyskaHladaniny_TimeStamp := vyskaHladaniny_TimeStamp2;
+         zmenaVysky := Long_Float(dT) * (Pritok - Odtok);
+         h := Hladina + zmenaVysky;
+         if h > 0.0 then
+           Hladina := h;
+         else
+           Hladina := 0.0;
+           --Odtok := 0.0;
          end if;
-         Hladina := Hladina + Pritok - Odtok;
+         --if Hladina < 0.0 then stare pocitanie odtoku
+           -- Odtok := 0.0;
+           -- Hladina := 0.0;
+         --end --if;
+        -- Hladina := Hladina + Pritok - Odtok;
       --
       declare
         msg_CPtr : CSetValue_CPtr := new CSetValue;
