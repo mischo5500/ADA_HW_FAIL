@@ -46,7 +46,7 @@ begin
       Connection.SendMessage(c, CMessage_CPtr(msg_CPtr), bConnectionWasTerminated);
     end;
       --
-      Hladina := 0;
+      Hladina := 0.0;
     loop
       delay 1.0;
       chyba := ZiadanaHladina - Hladina;
