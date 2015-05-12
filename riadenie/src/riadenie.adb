@@ -7,6 +7,7 @@ with ValueTypes;			use ValueTypes;
 with Ada.Text_IO;			use Ada.Text_IO;
 with GNAT.OS_Lib;
 with Ada.Long_Float_Text_IO;            use Ada.Long_Float_Text_IO;
+with Ada.Calendar;
 
 procedure Riadenie is
   c : Connection.TConnectionRef;
@@ -66,6 +67,7 @@ begin
         msg_CPtr.valueName := ValueName_Pkg.To_Bounded_String("Pritok"); --vyska hladiny
         msg_CPtr.value := validValue;
         msg_CPtr.value.value := Long_Float(novy_pritok);
+        msg_CPtr.value.timeStamp := Ada.Calendar.Clock;
         Connection.SendMessage(c, CMessage_CPtr(msg_CPtr), bConnectionWasTerminated);
       end;
       --
