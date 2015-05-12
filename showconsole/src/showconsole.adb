@@ -2,6 +2,7 @@ pragma Ada_2005;
 with Client;
 with Connection;			use Connection;
 with Client_Msgs;
+use Client_Msgs;
 --with Ada.Strings.Unbounded;		use Ada.Strings.Unbounded;
 with ValueTypes;			use ValueTypes;
 with Ada.Text_IO;			use Ada.Text_IO;
@@ -79,13 +80,18 @@ begin
 
               if line(line'First) = '1' then
                   Put_Line("Pritok:");
-                  Put_Line(Long_Float'Image(Client_Msgs.Pritok));
+                  --Put_Line(Long_Float'Image(Client_Msgs.Pritok));
+                  Put(Item =>Pritok, Fore => 5, Aft => 3, Exp => 0);
+                  Put_Line("");
                   Put_Line("Odtok:");
-                  Put_Line(Long_Float'Image(Client_Msgs.Odtok));
+                  Put(Item =>Odtok,Fore => 5, Aft => 3, Exp => 0);
+                  Put_Line("");
                   Put_Line("Vyska hladiny:");
-                  Put_Line(Long_Float'Image(Client_Msgs.Hladina));
+                  Put(Item =>Hladina, Fore => 5, Aft => 3, Exp => 0);
+                  Put_Line("");
                   Put_Line("Ziadana vyska hladiny:");
-                  Put_Line(Long_Float'Image(Client_Msgs.ZiadanaHladina));
+                  Put(Item =>ZiadanaHladina, Fore => 5, Aft => 3, Exp => 0);
+                  Put_Line("");
                end if;
                if line(line'First) = '3' then
 
